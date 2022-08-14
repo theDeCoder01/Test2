@@ -1,0 +1,4 @@
+{
+    "SECRET_KEY": "!ajahagbabg262ytasbnakma",
+    "SQLALCHEMY_DATABASE_URI": "postgresql://postgres:felicia@localhost:5432/flights_db"
+}

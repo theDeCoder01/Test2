@@ -1,0 +1,244 @@
+{% extends "base.html" %} {% block content %}
+<!-- Navbar available -->
+{% include "navbar.html" %}
+<!--End of Navbar section-->
+
+<style>
+  /* not active */
+  .nav-pills .nav-link:not(.active) {
+    background-color: #fff;
+    color: black;
+  }
+
+  /* active*/
+  .nav-pills .nav-link {
+    background-color: #343a40;
+    color: white;
+  }
+</style>
+
+{% set user_object = get_airline_by_user_id(user.id)%}
+
+<div style="padding: 5% 16%">
+  <ul class="nav nav-pills mb-3" id="profile-tabs" role="tablist">
+    <li class="nav-item">
+      <a
+        class="nav-link active"
+        id="user-tab-section"
+        data-toggle="pill"
+        href="#user-tab"
+        role="tab"
+        aria-controls="user-tab"
+        aria-selected="true"
+        >Profile</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        id="role-tab-section"
+        data-toggle="pill"
+        href="#role-tab"
+        role="tab"
+        aria-controls="pills-profile"
+        aria-selected="false"
+        >Data</a
+      >
+    </li>
+  </ul>
+
+  <!--Start of Contents-->
+  <div class="tab-content" id="pills-tabContent">
+    <!--Start of Profile-->
+    <div
+      class="tab-pane fade show active"
+      id="user-tab"
+      role="tabpanel"
+      aria-labelledby="user-tab-section"
+    >
+      <!-- Start of User jumbotron -->
+      <div class="jumbotron" style="background-color: #343a40; color: white">
+        {% if user_update_msg %}
+
+        <div
+          class="alert alert-primary alert-dismissible fade show"
+          role="alert"
+        >
+          {{ user_update_msg }}
+        </div>
+        {% endif %}
+        <form
+          method="POST"
+          action="{{url_for('airline_company_page.update_profile')}}"
+          enctype="multipart/form-data"
+        >
+          <h3 class="display-4">View/Edit Profile</h3>
+
+          <br />
+          <!-- Username field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Username<b style="color: red"> *</b></label
+            >
+            <input
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              name="username"
+              id="username"
+              aria-label="Username"
+              aria-describedby="username"
+              value="{{user.username}}"
+              disabled
+            />
+          </div>
+          <!-- End of username field -->
+
+          <!-- password field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Password<b style="color: red"> *</b></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              id="password"
+              aria-label="password"
+              aria-describedby="password"
+              value="{{user.password}}"
+              required
+            />
+          </div>
+          <!-- End of password field -->
+
+          <!-- email field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Password<b style="color: red"> *</b></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              aria-label="email"
+              aria-describedby="email"
+              value="{{user.email}}"
+              required
+            />
+          </div>
+          <!-- End of email field -->
+
+          <!-- User Role -->
+          <div class="form-group">
+            <label for="user_role" style="font-weight: bold"
+              >Role<b style="color: red"> *</b></label
+            >
+            <select
+              class="form-control"
+              name="user_role"
+              id="user_role"
+              disabled
+            >
+              <option value="{{current_user_role}}" selected>
+                {{current_user_role}}
+              </option>
+            </select>
+          </div>
+          <!-- User Role -->
+
+          <!-- Profile Image -->
+          <div class="form-group">
+            <label for="photo" style="font-weight: bold">Profile Image</label>
+            <input
+              type="file"
+              id="photo"
+              name="photo"
+              accept="image/*"
+              class="form-control"
+            />
+          </div>
+          <!-- End of Profile Image -->
+
+          <!-- submit -->
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+              Update Profile
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- End of Jumbotron container -->
+    </div>
+    <!--End of Profile-->
+
+    <!--End of Data section-->
+    <div
+      class="tab-pane fade"
+      id="role-tab"
+      role="tabpanel"
+      aria-labelledby="role-tab-section"
+    >
+      <!-- Start of User jumbotron -->
+      <div class="jumbotron" style="background-color: #343a40; color: white">
+        <form
+          method="POST"
+          action="{{url_for('airline_company_page.update_profile_data')}}"
+        >
+          <h3 class="display-4">View/Edit Airline Profile</h3>
+
+          <br />
+          <!-- name field-->
+          <div class="form-group">
+            <label for="name" style="font-weight: bold"
+              >Airline (Brand Name)<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              id="name"
+              aria-label="name"
+              aria-describedby="name"
+              value="{{user_object.name}}"
+              required
+            />
+          </div>
+          <!-- End of name field -->
+
+          <!-- Start Of Country Field -->
+          <div class="form-group">
+            <label for="country_id" style="font-weight: bold"
+              >Country<b style="color: red"> *</b></label
+            >
+            <select class="form-control" name="country_id" id="country_id">
+              {% for country in countries %} {% if country.id ==
+              user_object.country_id %}
+              <option value="{{country.id}}" selected>
+                {{get_country_name_by_id(user_object.country_id)}}
+              </option>
+              {% else %}
+              <option value="{{country.id}}">
+                {{get_country_name_by_id(country.id)}}
+              </option>
+              {% endif %} {% endfor %}
+            </select>
+          </div>
+          <!-- End of Country Field -->
+
+          <!-- submit -->
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update Data</button>
+          </div>
+        </form>
+      </div>
+      <!-- End of Jumbotron container -->
+    </div>
+    <!--End of Data section-->
+  </div>
+  <!--End of Contents-->
+</div>
+
+<!-- End of Block -->
+{% endblock %}

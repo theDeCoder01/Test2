@@ -1,0 +1,394 @@
+{% extends "base.html" %} {% block content %}
+<!-- Navbar available -->
+{% include "navbar.html" %}
+<!--End of Navbar section-->
+
+{% if user.photo_filename %}
+<!--If the user has a profile image -->
+{% set user_id = user.id %} {% set img_src = "/user-photo/" + user_id|string %}
+
+<!--If no profile image -->
+{% else %}
+<!--use default image -->
+{% set img_src = "../static/images/no_photo.png"%}
+<!--Endif -->
+{% endif %}
+
+<!-- New flight modal-->
+<div
+class="modal fade"
+id="addNewFlight"
+tabindex="-1"
+role="dialog"
+aria-labelledby="editTicketfromCustomer"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="editFlight">Add Flight</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="{{url_for('airline_company_page.add_flight')}}">
+        <!-- origin_country_id -->
+        <div class="form-group">
+          <label for="origin_country_id" style="font-weight: bold"
+            >Origin Country<b style="color: red"> *</b></label
+          >
+          <select
+            class="form-control"
+            name="origin_country_id"
+            id="origin_country_id"
+          >
+            {% for country in countries %}
+            <option value="{{country.id}}">
+              {{get_country_name_by_id(country.id)}}
+            </option>
+         {% endfor %}
+          </select>
+        </div>
+        <!-- End of country Origin -->
+
+        <!-- Destination Country -->
+        <div class="form-group">
+          <label for="destination_country_id" style="font-weight: bold"
+            >Destination Country<b style="color: red"> *</b></label
+          >
+          <select
+            class="form-control"
+            name="destination_country_id"
+            id="destination_country_id"
+          >
+            {% for country in countries %}
+
+            <option value="{{country.id}}">
+              {{get_country_name_by_id(country.id)}}
+            </option> 
+            {% endfor %}
+          </select>
+        </div>
+        <!-- End of country Origin -->
+
+        <!-- Departure Date -->
+        <div class="form-group">
+          <label for="departure_date" style="font-weight: bold"
+            >Departure Date<b style="color: red"> *</b></label
+          >
+          <input
+            type="datetime"
+            class="form-control"
+            name="departure_date"
+            id="departure_date"
+            value = "2022-12-11 18:02:00"
+          />
+        </div>
+        <!-- End of Departure Date -->
+
+        <!-- Arrival Date -->
+        <div class="form-group">
+          <label for="landing_date" style="font-weight: bold"
+            >Arrival Date<b style="color: red"> *</b></label
+          >
+          <input
+            type="datetime"
+            class="form-control"
+            name="landing_date"
+            id="landing_date"
+            value = "2022-12-12 15:15:00"
+          />
+        </div>
+        <!-- End of Arrival Date -->
+
+        <!-- Remaining Tickets-->
+        <div class="form-group">
+          <label for="remaining_tickets" style="font-weight: bold"
+            >Remaining Tickets<b style="color: red"> *</b></label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="remaining_tickets"
+            id="remaining_tickets"
+            value = 10
+          />
+        </div>
+        <!-- End of Remaining Tickets -->
+      
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      <button
+        class="btn btn-primary"
+        type= "submit"
+        >Add Flight</button
+      >
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+<!--End of New Flight modal-->
+
+<!--Airlines -->
+<div style="padding: 2%">
+  <div class="jumbotron">
+    <h1 class="display-4">My Flights</h1>
+    <br />
+    <button class="btn btn-primary text-white" type="button"
+    data-toggle="modal"
+    data-target="#addNewFlight">Add a new flight</button>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{error}}
+    </div>
+    {% endif %}
+    <br />
+    <p class="lead">Here you can see all your flights</p>
+    {% if flights %}
+    <div class="card-deck">
+      {% for flight in flights %}
+      <div class="card" style="max-width: 18rem">
+        <img class="card-img-top" src="{{ img_src }}" alt="Flights" />
+        <div class="card-body">
+          <h5 class="card-title">
+            {{get_airline_name_by_id(flight.airline_company_id)}}
+          </h5>
+          <p class="card-text">
+            Origin Country: {{get_country_name_by_id(flight.origin_country_id)}}
+          </p>
+          <p class="card-text">
+            Destination Country:
+            {{get_country_name_by_id(flight.destination_country_id)}}
+          </p>
+          <p class="card-text">Departure Date: {{flight.departure_date}}</p>
+          <p class="card-text">Arrival Date: {{flight.landing_date}}</p>
+
+          <div class="row">
+            <button
+              type="button"
+              class="btn btn-primary mr-3"
+              data-toggle="modal"
+              data-target="#editTicket-{{flight.id}}"
+            >
+              Edit flight
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-toggle="modal"
+              data-target="#deleteTicket-{{flight.id}}"
+            >
+              Remove flight
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmation of deletion-->
+      <div
+        class="modal fade"
+        id="deleteTicket-{{flight.id}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="dleteTicketfromCustomer"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                Delete Flight
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this flight? This is irreversible.
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <a
+                class="btn btn-danger"
+                href="{{ url_for('airline_company_page.remove_flight', flight_id=flight.id) }}"
+                >Delete Flight</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End of modal-->
+
+      <!-- Edit flight modal-->
+      <div
+        class="modal fade"
+        id="editTicket-{{flight.id}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="editTicketfromCustomer"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editFlight">Edit Flight</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{url_for('airline_company_page.update_flight', flight_id=flight.id)}}">
+                <!-- origin_country_id -->
+                <div class="form-group">
+                  <label for="origin_country_id" style="font-weight: bold"
+                    >Origin Country<b style="color: red"> *</b></label
+                  >
+                  <select
+                    class="form-control"
+                    name="origin_country_id"
+                    id="origin_country_id"
+                  >
+                    {% for country in countries %} {% if country.id ==
+                    flight.origin_country_id %}
+                    <option value="{{country.id}}" selected>
+                      {{get_country_name_by_id(flight.origin_country_id)}}
+                    </option>
+                    {% else %}
+                    <option value="{{country.id}}">
+                      {{get_country_name_by_id(country.id)}}
+                    </option>
+                    {% endif %} {% endfor %}
+                  </select>
+                </div>
+                <!-- End of country Origin -->
+
+                <!-- Destination Country -->
+                <div class="form-group">
+                  <label for="destination_country_id" style="font-weight: bold"
+                    >Destination Country<b style="color: red"> *</b></label
+                  >
+                  <select
+                    class="form-control"
+                    name="destination_country_id"
+                    id="destination_country_id"
+                  >
+                    {% for country in countries %} {% if country.id ==
+                    flight.destination_country_id %}
+                    <option value="{{country.id}}" selected>
+                      {{get_country_name_by_id(flight.destination_country_id)}}
+                    </option>
+                    {% else %}
+                    <option value="{{country.id}}">
+                      {{get_country_name_by_id(country.id)}}
+                    </option>
+                    {% endif %} {% endfor %}
+                  </select>
+                </div>
+                <!-- End of country Origin -->
+
+                <!-- Departure Date -->
+                <div class="form-group">
+                  <label for="departure_date" style="font-weight: bold"
+                    >Departure Date<b style="color: red"> *</b></label
+                  >
+                  <input
+                    type="datetime"
+                    class="form-control"
+                    name="departure_date"
+                    id="departure_date"
+                    value="{{flight.departure_date}}"
+                  />
+                </div>
+                <!-- End of Departure Date -->
+
+                <!-- Arrival Date -->
+                <div class="form-group">
+                  <label for="landing_date" style="font-weight: bold"
+                    >Arrival Date<b style="color: red"> *</b></label
+                  >
+                  <input
+                    type="datetime"
+                    class="form-control"
+                    name="landing_date"
+                    id="landing_date"
+                    value="{{flight.landing_date}}"
+                  />
+                </div>
+                <!-- End of Arrival Date -->
+
+                <!-- Remaining Tickets-->
+                <div class="form-group">
+                  <label for="remaining_tickets" style="font-weight: bold"
+                    >Remaining Tickets<b style="color: red"> *</b></label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="remaining_tickets"
+                    id="remaining_tickets"
+                    value="{{flight.remaining_tickets}}"
+                  />
+                </div>
+                <!-- End of Remaining Tickets -->
+              
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                class="btn btn-primary"
+                type= "submit"
+                >Edit Flight</button
+              >
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--End of Flight modal-->
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <p>You have no flights scheduled!</p>
+    {% endif %}
+  </div>
+</div>
+<!--End of Airlines -->
+
+{% endblock %}

@@ -1,0 +1,5 @@
+pytest==5.2.1
+SQLAlchemy==1.4.29
+more_itertools==7.2.0
+Flask==1.1.1
+PyJWT==2.4.0

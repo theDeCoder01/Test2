@@ -1,0 +1,300 @@
+{% extends "base.html" %} {% block content %}
+<!-- Navbar available -->
+{% include "navbar.html" %}
+<!--End of Navbar section-->
+
+<style>
+  /* not active */
+  .nav-pills .nav-link:not(.active) {
+    background-color: #fff;
+    color: black;
+  }
+
+  /* active*/
+  .nav-pills .nav-link {
+    background-color: #343a40;
+    color: white;
+  }
+</style>
+
+{% set user_object = get_customer_by_user_id(user.id)%}
+
+<div style="padding: 5% 16%">
+  <ul class="nav nav-pills mb-3" id="profile-tabs" role="tablist">
+    <li class="nav-item">
+      <a
+        class="nav-link active"
+        id="user-tab-section"
+        data-toggle="pill"
+        href="#user-tab"
+        role="tab"
+        aria-controls="user-tab"
+        aria-selected="true"
+        >Profile</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        id="role-tab-section"
+        data-toggle="pill"
+        href="#role-tab"
+        role="tab"
+        aria-controls="pills-profile"
+        aria-selected="false"
+        >Data</a
+      >
+    </li>
+  </ul>
+
+  <!--Start of Contents-->
+  <div class="tab-content" id="pills-tabContent">
+    <!--Start of Profile-->
+    <div
+      class="tab-pane fade show active"
+      id="user-tab"
+      role="tabpanel"
+      aria-labelledby="user-tab-section"
+    >
+      <!-- Start of User jumbotron -->
+      <div class="jumbotron" style="background-color: #343a40; color: white">
+        {% if user_update_msg %}
+
+        <div
+          class="alert alert-primary alert-dismissible fade show"
+          role="alert"
+        >
+          {{ user_update_msg }}
+        </div>
+        {% endif %}
+        <form
+          method="POST"
+          action="{{url_for('customer_page.update_profile')}}"
+          enctype="multipart/form-data"
+        >
+          {% if current_user_role == 'Airline' %}
+          <h3 class="display-4">View/Edit Profile</h3>
+          {% else %}
+          <h3 class="display-4">View/Edit Profile</h3>
+          {% endif %}
+
+          <br />
+          <!-- Username field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Username<b style="color: red"> *</b></label
+            >
+            <input
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              name="username"
+              id="username"
+              aria-label="Username"
+              aria-describedby="username"
+              value="{{user.username}}"
+              disabled
+            />
+          </div>
+          <!-- End of username field -->
+
+          <!-- password field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Password<b style="color: red"> *</b></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              id="password"
+              aria-label="password"
+              aria-describedby="password"
+              value="{{user.password}}"
+              required
+            />
+          </div>
+          <!-- End of password field -->
+
+          <!-- email field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Email<b style="color: red"> *</b></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              aria-label="email"
+              aria-describedby="email"
+              value="{{user.email}}"
+              required
+            />
+          </div>
+          <!-- End of email field -->
+
+          <!-- User Role -->
+          <div class="form-group">
+            <label for="user_role" style="font-weight: bold"
+              >Role<b style="color: red"> *</b></label
+            >
+            <select
+              class="form-control"
+              name="user_role"
+              id="user_role"
+              disabled
+            >
+              <option value="{{current_user_role}}" selected>
+                {{current_user_role}}
+              </option>
+            </select>
+          </div>
+          <!-- User Role -->
+
+          <!-- Profile Image -->
+          <div class="form-group">
+            <label for="photo" style="font-weight: bold">Profile Image</label>
+            <input
+              type="file"
+              id="photo"
+              name="photo"
+              accept="image/*"
+              class="form-control"
+            />
+          </div>
+          <!-- End of Profile Image -->
+
+          <!-- submit -->
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+              Update Profile
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- End of Jumbotron container -->
+    </div>
+    <!--End of Profile-->
+
+    <!--End of Data section-->
+    <div
+      class="tab-pane fade"
+      id="role-tab"
+      role="tabpanel"
+      aria-labelledby="role-tab-section"
+    >
+      <!-- Start of User jumbotron -->
+      <div class="jumbotron" style="background-color: #343a40; color: white">
+        <form
+          method="POST"
+          action="{{url_for('customer_page.update_profile_data')}}"
+        >
+          <h3 class="display-4">View/Edit Customer Profile</h3>
+
+          <br />
+          <!-- firstname field-->
+          <div class="form-group">
+            <label for="firstname" style="font-weight: bold"
+              >First Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="firstname"
+              id="firstname"
+              aria-label="firstname"
+              aria-describedby="firstname"
+              value="{{user_object.firstname}}"
+              required
+            />
+          </div>
+          <!-- End of firstname field -->
+
+          <!-- lastname field-->
+          <div class="form-group">
+            <label for="lastname" style="font-weight: bold"
+              >Last Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="lastname"
+              id="lastname"
+              aria-label="lastname"
+              aria-describedby="lastname"
+              value="{{user_object.lastname}}"
+              required
+            />
+          </div>
+          <!-- End of lastname field -->
+
+          <!-- address field-->
+          <div class="form-group">
+            <label for="address" style="font-weight: bold"
+              >Address<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="address"
+              id="address"
+              aria-label="address"
+              aria-describedby="address"
+              value="{{user_object.address}}"
+              required
+            />
+          </div>
+          <!-- End of address field -->
+
+          <!-- phone_no field-->
+          <div class="form-group">
+            <label for="phone_no" style="font-weight: bold"
+              >Phone Number<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="phone_no"
+              id="phone_no"
+              aria-label="phone_no"
+              aria-describedby="phone_no"
+              value="{{user_object.phone_no}}"
+              required
+            />
+          </div>
+          <!-- End of phone_no field -->
+
+          <!-- credit_card_no field-->
+          <div class="form-group">
+            <label for="credit_card_no" style="font-weight: bold"
+              >Credit Card Number<b style="color: red"> *</b></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="credit_card_no"
+              id="credit_card_no"
+              aria-label="credit_card_no"
+              aria-describedby="credit_card_no"
+              value="{{user_object.credit_card_no}}"
+              required
+            />
+          </div>
+          <!-- End of credit_card_no field -->
+
+          <!-- submit -->
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update Data</button>
+          </div>
+        </form>
+      </div>
+      <!-- End of Jumbotron container -->
+    </div>
+    <!--End of Data section-->
+  </div>
+  <!--End of Contents-->
+</div>
+
+<!-- End of Block -->
+{% endblock %}

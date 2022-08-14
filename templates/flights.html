@@ -1,0 +1,105 @@
+<div class="container my-5">
+  <!-- Jumbotron -->
+  <!-- Content -->
+  <div style="background-color: black">
+    <div class="card-body text-white">
+      <h5 class="mb-4 font-weight-bold">
+        Flights currently available for booking
+      </h5>
+    </div>
+  </div>
+  <!-- Content -->
+
+  <!-- Jumbotron -->
+
+  <hr class="my-5" />
+
+  {% if flights %}
+  <!--Carousel Wrapper-->
+  <div
+    id="multi-item-example"
+    class="carousel slide carousel-multi-item"
+    data-ride="carousel"
+  >
+    {% if ticket_error %}
+    <div class="alert alert-danger" role="alert">{{ticket_error}}</div>
+    {% endif %}
+
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+      <li
+        data-target="#multi-item-example"
+        data-slide-to="0"
+        class="active"
+      ></li>
+      <li data-target="#multi-item-example" data-slide-to="1"></li>
+    </ol>
+    <!--/.Indicators-->
+
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox" id="flights-options">
+      {% for flight in flights %}
+      <!--Slides-->
+      <div class="carousel-item active">
+        {% for flight_parameters in flight %}
+        <div class="col-md-3" style="float: left">
+          {% set airline =
+          get_airline_by_id(flight_parameters.airline_company_id) %} {% set user
+          = get_user_by_user_id(airline.user_id) %} {% if user.photo_filename %}
+          <!--If the user has a profile image -->
+          {% set user_id = user.id %} {% set img_src = "/user-photo/" +
+          user_id|string %}
+
+          <!--If no profile image -->
+          {% else %}
+          <!--use default image -->
+          {% set img_src = "../static/images/no_photo.png"%}
+          <!--Endif -->
+          {% endif %}
+
+          <div class="card mb-2">
+            <img class="card-img-top" src="{{img_src}}" alt="Card image cap" />
+            <div class="card-body">
+              <h4 class="card-title">
+                {{get_airline_name_by_id(flight_parameters.airline_company_id)}}
+              </h4>
+              <p class="card-text">
+                <b style="color: red">
+                  Tickets Left: {{flight_parameters.remaining_tickets}}</b
+                >
+              </p>
+              <p class="card-text">
+                Origin:
+                {{get_country_name_by_id(flight_parameters.origin_country_id)}}
+              </p>
+              <p class="card-text">
+                Destination:
+                {{get_country_name_by_id(flight_parameters.destination_country_id)}}
+              </p>
+              <p class="card-text">
+                Departure Date: {{flight_parameters.departure_date}}
+              </p>
+              <p class="card-text">
+                Landing Date: {{flight_parameters.landing_date}}
+              </p>
+              <a
+                class="btn btn-secondary"
+                href="/customer/add-ticket?flight_id={{flight_parameters.id}}"
+                >Book Ticket</a
+              >
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+      <!--/Slides-->
+      {% endfor %}
+    </div>
+    <!--/.Slides-->
+  </div>
+  <!--/.Carousel Wrapper-->
+  {% else %}
+  <h1>No Flights Available</h1>
+  {% endif %}
+</div>

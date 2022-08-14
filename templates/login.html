@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block content %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fa fa-bars"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Navbar brand -->
+      <a class="navbar-brand mt-2 mt-lg-0" href="#">
+        <h4>Flight System</h4>
+      </a>
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
+
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
+      <div class="row" style="padding: 10px">
+        <!-- Register Button -->
+        <div class="dropdown">
+          <a
+            class="btn btn-secondary mr-3"
+            href="/register"
+            id="login-btn"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Register
+          </a>
+        </div>
+
+        <!-- Login Button -->
+        <div>
+          <a class="btn btn-secondary mr-3" href="/login" id="login-btn">
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+
+<!-- login -->
+<form method="POST" style="padding: 4%">
+  <div class="p-3 mb-2">
+    <h1 class="p-2 text-black">Login</h1>
+    <div class="jumbotron" style="background-color: #343a40">
+      {% if error %}
+      <div class="alert alert-danger" role="alert">{{error}}</div>
+      {% endif %}
+      <div class="form-group">
+        <label for="username" class="text-white">Username</label>
+        <input
+          autocomplete="off"
+          type="text"
+          class="form-control"
+          name="username"
+          id="username"
+          aria-describedby="username-text"
+          placeholder="Please enter your username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="text-white">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          name="password"
+          aria-describedby="password-text"
+          placeholder="Please enter your password"
+        />
+      </div>
+
+      <input type="submit" class="btn btn-primary" value="Login" />
+    </div>
+  </div>
+</form>
+<!--End of login section-->
+{% endblock %}

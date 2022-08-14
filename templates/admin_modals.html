@@ -1,0 +1,586 @@
+<!-- Add New Destination/Country modal-->
+<div
+    class="modal fade"
+    id="addCountry"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addCountry"
+    aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="countryTitle">Add A New Destination/ Country For Airlines</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="{{url_for('admin_page.add_country')}}" enctype="multipart/form-data">
+        <!-- Country name field-->
+        <div class="form-group">
+            <label for="name" style="font-weight: bold"
+              >City, Country Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              id="name"
+              aria-label="name"
+              aria-describedby="name"
+              placeholder="Enter Country, for example: Texas, USA"
+              required
+            />
+          </div>
+          <!-- End of Country name field -->
+
+          <!-- Country Flag -->
+          <div class="form-group">
+            <label for="country-flag" style="font-weight: bold">Country Flag Image</label>
+            <input
+              type="file"
+              id="country-flag"
+              name="country-flag"
+              accept="image/*"
+              class="form-control"
+            />
+          </div>
+          <!-- End of Country Flag -->
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      <button
+        class="btn btn-primary"
+        type= "submit"
+        >Add Country</button
+      >
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+<!--End of Add New Destination/Country modal-->
+
+
+<!-- Add New Customer modal-->
+<div
+    class="modal fade"
+    id="addCustomer"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addCustomer"
+    aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addCustomerTitle">Add Customer</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="{{url_for('admin_page.add_customer')}}" enctype="multipart/form-data">
+        <!-- firstname field-->
+        <div class="form-group">
+            <label for="firstname" style="font-weight: bold"
+              >First Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="firstname"
+              id="firstname"
+              aria-label="firstname"
+              aria-describedby="firstname"
+              placeholder="Enter First Name"
+              required
+            />
+          </div>
+          <!-- End of firstname field -->
+
+          <!-- lastname field-->
+          <div class="form-group">
+            <label for="lastname" style="font-weight: bold"
+              >Last Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="lastname"
+              id="lastname"
+              aria-label="lastname"
+              aria-describedby="lastname"
+              placeholder="Enter Last Name"
+              required
+            />
+          </div>
+          <!-- End of lastname field -->
+
+          <!-- Username field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Username<b style="color: red"> *</b></label
+            >
+            <input
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              name="username"
+              id="username"
+              aria-label="Username"
+              aria-describedby="username"
+              placeholder="Choose a unique name"
+              
+            />
+          </div>
+          <!-- End of username field -->
+
+          <!-- email field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Email<b style="color: red"> *</b></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              aria-label="email"
+              aria-describedby="email"
+              placeholder="Enter Email"
+              required
+            />
+          </div>
+          <!-- End of email field -->
+
+          <!-- address field-->
+          <div class="form-group">
+            <label for="address" style="font-weight: bold"
+              >Address<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="address"
+              id="address"
+              aria-label="address"
+              aria-describedby="address"
+              placeholder="Enter Address"
+              required
+            />
+          </div>
+          <!-- End of address field -->
+
+          <!-- Profile Image -->
+          <div class="form-group">
+            <label for="customer-photo" style="font-weight: bold">Profile Image</label>
+            <input
+              type="file"
+              id="customer-photo"
+              name="customer-photo"
+              accept="image/*"
+              class="form-control"
+            />
+          </div>
+          <!-- End of Profile Image -->
+
+          <!-- phone_no field-->
+          <div class="form-group">
+            <label for="phone_no" style="font-weight: bold"
+              >Phone Number<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="customer-phone-no"
+              id="customer-phone-no"
+              aria-label="customer-phone-no"
+              aria-describedby="customer-phone-no"
+              placeholder="Enter Phone Number"
+              required
+            />
+          </div>
+          <!-- End of phone_no field -->
+
+          <!-- credit_card_no field-->
+          <div class="form-group">
+            <label for="credit_card_no" style="font-weight: bold"
+              >Credit Card Number<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="credit_card_no"
+              id="credit_card_no"
+              aria-label="credit_card_no"
+              aria-describedby="credit_card_no"
+              placeholder="Enter Credit Card Number"
+              required
+            />
+          </div>
+          <!-- End of credit_card_no field -->
+
+
+          <!-- password field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Password<b style="color: red"> *</b></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              id="password"
+              aria-label="password"
+              aria-describedby="password"
+              placeholder="Choose default password"
+              required
+            />
+          </div>
+          <!-- End of password field -->
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      <button
+        class="btn btn-primary"
+        type= "submit"
+        >Register Customer</button
+      >
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+<!--End of Add New Customer modal-->
+
+
+<!-- Add New Airline modal-->
+<div
+    class="modal fade"
+    id="addAirline"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addCustomer"
+    aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addAirlineTitle">Add Airline</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="{{url_for('admin_page.add_airline')}}" enctype="multipart/form-data">
+        <!-- airline name field-->
+        <div class="form-group">
+            <label for="firstname" style="font-weight: bold"
+              >Airline Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              id="name"
+              aria-label="name"
+              aria-describedby="name"
+              placeholder="Enter First Name"
+              required
+            />
+          </div>
+          <!-- End of airline name field -->
+
+          <!-- Country field-->
+          <div class="form-group">
+            <label for="country_id" style="font-weight: bold"
+              >Country<b style="color: red"> *</b></label
+            >
+            <select
+              class="form-control"
+              name="country_id"
+              id="country_id"
+            >
+              {% for country in countries %}
+  
+              <option value="{{country.id}}">
+                {{get_country_name_by_id(country.id)}}
+              </option> 
+              {% endfor %}
+            </select>
+          </div>
+          
+          <!--End of Country Select field -->
+
+          <!-- Username field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Username<b style="color: red"> *</b></label
+            >
+            <input
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              name="username"
+              id="username"
+              aria-label="Username"
+              aria-describedby="username"
+              placeholder="Choose a unique name"
+
+            />
+          </div>
+          <!-- End of username field -->
+
+          <!-- password field-->
+          <div class="form-group">
+            <label for="password" style="font-weight: bold"
+              >Password<b style="color: red"> *</b></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              id="password"
+              aria-label="password"
+              aria-describedby="password"
+              placeholder="Choose default password"
+              required
+            />
+          </div>
+          <!-- End of password field -->
+
+          <!-- email field-->
+          <div class="form-group">
+            <label for="email" style="font-weight: bold"
+              >Email<b style="color: red"> *</b></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              aria-label="email"
+              aria-describedby="email"
+              placeholder="Enter Email"
+              required
+            />
+          </div>
+          <!-- End of email field -->
+
+
+          <!-- AirlineBrand Image -->
+          <div class="form-group">
+            <label for="airline-logo" style="font-weight: bold">Airline Brand Image</label>
+            <input
+              type="file"
+              id="airline-logo"
+              name="airline-logo"
+              accept="image/*"
+              class="form-control"
+            />
+          </div>
+          <!-- End of AirlineBrand Image -->
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      <button
+        class="btn btn-primary"
+        type= "submit"
+        >Register Airline</button
+      >
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+<!--End of Add New Airline modal-->
+
+
+<!-- Add New Admin modal-->
+<div
+    class="modal fade"
+    id="addAdmin"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addCustomer"
+    aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addAdmin">Add Admin</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="{{url_for('admin_page.add_admin')}}" enctype="multipart/form-data">
+        <!-- firstname field-->
+        <div class="form-group">
+            <label for="admin-firstname" style="font-weight: bold"
+              >First Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="admin-firstname"
+              id="admin-firstname"
+              aria-label="admin-firstname"
+              aria-describedby="admin-firstname"
+              placeholder="Enter First Name"
+              required
+            />
+          </div>
+          <!-- End of firstname field -->
+
+          <!-- lastname field-->
+          <div class="form-group">
+            <label for="admin-lastname" style="font-weight: bold"
+              >Last Name<b style="color: red"> *</b></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="admin-lastname"
+              id="admin-lastname"
+              aria-label="admin-lastname"
+              aria-describedby="admin-lastname"
+              placeholder="Enter Last Name"
+              required
+            />
+          </div>
+          <!-- End of lastname field -->
+
+          <!-- Username field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Username<b style="color: red"> *</b></label
+            >
+            <input
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              name="username"
+              id="username"
+              aria-label="Username"
+              aria-describedby="username"
+              placeholder="Choose a unique name"
+
+            />
+          </div>
+          <!-- End of username field -->
+
+          <!-- email field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Email<b style="color: red"> *</b></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              aria-label="email"
+              aria-describedby="email"
+              placeholder="Enter Email"
+              required
+            />
+          </div>
+          <!-- End of email field -->
+
+
+          <!-- Profile Image -->
+          <div class="form-group">
+            <label for="admin-photo" style="font-weight: bold">Profile Image</label>
+            <input
+              type="file"
+              id="admin-photo"
+              name="admin-photo"
+              accept="image/*"
+              class="form-control"
+            />
+          </div>
+          <!-- End of Profile Image -->
+
+
+          <!-- password field-->
+          <div class="form-group">
+            <label for="username" style="font-weight: bold"
+              >Password<b style="color: red"> *</b></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              id="password"
+              aria-label="password"
+              aria-describedby="password"
+              placeholder="Choose default password"
+              required
+            />
+          </div>
+          <!-- End of password field -->
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      <button
+        class="btn btn-primary"
+        type= "submit"
+        >Add Admin</button
+      >
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+<!--End of Add New Admin modal-->

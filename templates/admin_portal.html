@@ -1,0 +1,449 @@
+{% extends "base.html" %} {% block content %}
+<!-- Navbar available -->
+{% include "navbar.html" %}
+<!--End of Navbar section-->
+
+{% include 'admin_modals.html'%}
+
+<!--Countries/ Destinations -->
+<div style="padding: 2%">
+  <div class="jumbotron">
+    <h1 class="display-4">All Destinations/ Countries</h1>
+    <br />
+    <button
+      class="btn btn-primary text-white"
+      type="button"
+      data-toggle="modal"
+      data-target="#addCountry"
+    >
+      Add Country
+    </button>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">{{error}}</div>
+    {% endif %}
+    <br />
+    <p class="lead">
+      Here is a list of all Destinations/Countries For Airlines
+    </p>
+    {% if countries %}
+    <div class="card-deck">
+      {% for country in countries %}
+
+      <!--Country Image-->
+      {% if country.country_flag_filename %}
+      <!--If the country has a flag image -->
+      {% set country_id = country.id %} {% set country_flag_img =
+      "/country-photo/" + country_id|string %}
+
+      <!--If no profile image -->
+      {% else %}
+      <!--use default image -->
+      {% set country_flag_img = "../static/images/no_photo.png"%}
+      <!--Endif -->
+      {% endif %}
+
+      <div class="card" style="max-width: 18rem">
+        <img
+          class="card-img-top"
+          src="{{ country_flag_img }}"
+          alt="countries"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{country.name}}</h5>
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#deleteCountry-{{country.id}}"
+          >
+            Remove Country
+          </button>
+        </div>
+      </div>
+
+      <!-- Confirmation of deletion-->
+      <div
+        class="modal fade"
+        id="deleteCountry-{{country.id}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="deleteCountryModal"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Country</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this destination? This is
+              irreversible.
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <a
+                class="btn btn-danger"
+                href="{{ url_for('admin_page.remove_country', country_id=country.id) }}"
+                >Delete Country</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End of modal-->
+
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <p>No Destinations currently available! Try adding one!</p>
+    {% endif %}
+  </div>
+</div>
+<!--End of Countries/ Destinations -->
+
+<!--Airlines -->
+<div style="padding: 2%">
+  <div class="jumbotron">
+    <h1 class="display-4">All Airlines</h1>
+    <br />
+    <button
+      class="btn btn-primary text-white"
+      type="button"
+      data-toggle="modal"
+      data-target="#addAirline"
+    >
+      Add a new Airline
+    </button>
+
+    <br />
+    <p class="lead">Here is a list of all Airlines Currently available</p>
+    {% if airlines %}
+    <div class="card-deck">
+      <!--Get user image -->
+      {% for airline in airlines %} {% set user1 =
+      get_user_by_user_id(airline.user_id) %} {% if user1.photo_filename %}
+      <!--If the user has a profile image -->
+      {% set user_id = user1.id %} {% set img_src1 = "/user-photo/" +
+      user_id|string %}
+
+      <!--If no profile image -->
+      {% else %}
+      <!--use default image -->
+      {% set img_src1 = "../static/images/no_photo.png"%}
+      <!--Endif -->
+      {% endif %}
+
+      <div class="card" style="max-width: 18rem">
+        <img class="card-img-top" src="{{ img_src1 }}" alt="airlines" />
+        <div class="card-body">
+          <h5 class="card-title">{{airline.name}}</h5>
+          <p class="card-text">
+            Country: {{get_country_name_by_id(airline.country_id)}}
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#deleteAirline-{{airline.id}}"
+          >
+            Remove Airline
+          </button>
+        </div>
+      </div>
+
+      <!-- Confirmation of deletion-->
+      <div
+        class="modal fade"
+        id="deleteAirline-{{airline.id}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="deleteAirline"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Airline</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this airline? This is
+              irreversible.
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <a
+                class="btn btn-danger"
+                href="{{ url_for('admin_page.remove_airline', airline_id=airline.id) }}"
+                >Delete Airline</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End of modal-->
+
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <p>No Airlines currently available! Try adding one!</p>
+    {% endif %}
+  </div>
+</div>
+<!--End of Airlines -->
+
+<!--Customers -->
+<div style="padding: 2%">
+  <div class="jumbotron">
+    <h1 class="display-4">All Customers</h1>
+    <br />
+    <button
+      class="btn btn-primary text-white"
+      type="button"
+      data-toggle="modal"
+      data-target="#addCustomer"
+    >
+      Add a new Customer
+    </button>
+
+    <br />
+    <p class="lead">Here is a list of all Customers currently available</p>
+    {% if customers %}
+    <div class="card-deck">
+      {% for customer in customers %} {% set user2 =
+      get_user_by_user_id(customer.user_id) %} {% if user2.photo_filename %}
+      <!--If the user has a profile image -->
+      {% set user_id = user2.id %} {% set img_src2 = "/user-photo/" +
+      user_id|string %}
+
+      <!--If no profile image -->
+      {% else %}
+      <!--use default image -->
+      {% set img_src2 = "../static/images/no_photo.png"%}
+      <!--Endif -->
+      {% endif %}
+
+      <div class="card" style="max-width: 18rem">
+        <img class="card-img-top" src="{{ img_src2 }}" alt="customers" />
+        <div class="card-body">
+          <h5 class="card-title">{{user2.username}}</h5>
+          <p class="card-text">
+            Full Name: {{customer.firstname + " " + customer.lastname}}
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#deleteCustomer-{{customer.id}}"
+          >
+            Remove Customer
+          </button>
+        </div>
+      </div>
+
+      <!-- Confirmation of deletion-->
+      <div
+        class="modal fade"
+        id="deleteCustomer-{{customer.id}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="deleteAirline"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Customer</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this customer with the username:
+              <b>{{user2.username}}</b>? This is irreversible.
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <a
+                class="btn btn-danger"
+                href="{{ url_for('admin_page.remove_customer', customer_id=customer.id) }}"
+                >Delete Customer</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End of modal-->
+
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <p>No Customers currently available! Try adding one!</p>
+    {% endif %}
+  </div>
+</div>
+<!--End of Customers -->
+
+<!--Administrators -->
+<div style="padding: 2%">
+  <div class="jumbotron">
+    <h1 class="display-4">All Administrators</h1>
+    <br />
+    <button
+      class="btn btn-primary text-white"
+      type="button"
+      data-toggle="modal"
+      data-target="#addAdmin"
+    >
+      Add Administrator
+    </button>
+
+    <br />
+    <br />
+    <p class="lead">Here is a list of all Administrators currently available</p>
+    {% if administrators %}
+    <div class="card-deck">
+      {% for admin in administrators %} {% set user3 =
+      get_user_by_user_id(admin.user_id) %} {% if user3.photo_filename %}
+      <!--If the user has a profile image -->
+      {% set user_id = user3.id %} {% set img_src3 = "/user-photo/" +
+      user_id|string %}
+
+      <!--If no profile image -->
+      {% else %}
+      <!--use default image -->
+      {% set img_src3 = "../static/images/no_photo.png"%}
+      <!--Endif -->
+      {% endif %}
+
+      <div class="card" style="max-width: 18rem">
+        <img class="card-img-top" src="{{ img_src3 }}" alt="administrators" />
+        <div class="card-body">
+          <h5 class="card-title">{{user3.username}}</h5>
+          <p class="card-text">
+            Full Name: {{admin.firstname + " " + admin.lastname}}
+          </p>
+
+          {% if admin.user_id == current_logged_in_admin %}
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#deleteAdmin-{{admin.id}}"
+            disabled
+          >
+            Remove Admin (YOU)
+          </button>
+          {% else %}
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#deleteAdmin-{{admin.id}}"
+          >
+            Remove Admin
+          </button>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Confirmation of deletion-->
+      <div
+        class="modal fade"
+        id="deleteAdmin-{{admin.id}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="deleteAdministrator"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Admin</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this Administrator? This is
+              irreversible.
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <a
+                class="btn btn-danger"
+                href="{{ url_for('admin_page.remove_admin', admin_id=admin.id) }}"
+                >Delete Admin</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End of modal-->
+
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <p>No Administrators currently available! Try adding one!</p>
+    {% endif %}
+  </div>
+</div>
+<!--End of Administrators -->
+
+{% endblock %}
